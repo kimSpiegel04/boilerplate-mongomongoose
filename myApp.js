@@ -7,6 +7,11 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 
 let Person;
 
+let arrayOfPeople = [
+  {name: 'George Lucas', age: 88, favoriteFoods:['spaghetti', 'mushrooms']}, 
+  {name: "Camel Camel", age: 3, favoriteFoods:['water', 'straw']}
+]
+
 const personSchema = new Schema({
   name: {
     type: String,
@@ -22,15 +27,29 @@ const personSchema = new Schema({
 Person = mongoose.model('Person', personSchema);
 
 const createAndSavePerson = (done) => {
-  done(null /*, data*/);
-};
+  const drewBarry = new Person({
+    name: "Drew Barry",
+    age: 33,
+    favoriteFoods: ['sushi', 'duck', 'vanilla ice cream']
+  })
 
+  drewBarry.save(function(err, data){
+    if(err) return console.error(err);
+    done(null, data);
+  });
+};
 const createManyPeople = (arrayOfPeople, done) => {
-  done(null /*, data*/);
+  Person.create(arrayOfPeople, function(err, people){
+    if (err) return console.log(err);
+    done(null, people)
+  });
 };
 
 const findPeopleByName = (personName, done) => {
-  done(null /*, data*/);
+  Person.find({name: personName}, function(err, person){
+    if (err) return console.log(err);
+    done(null, person);
+  });
 };
 
 const findOneByFood = (food, done) => {
