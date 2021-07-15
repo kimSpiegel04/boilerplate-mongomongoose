@@ -70,34 +70,38 @@ const findEditThenSave = (personId, done) => {
   })
 };
 
-const findEditThenSave = (personId, done) => {
-  const foodToAdd = "hamburger";
-
-  done(null /*, data*/);
-};
-
 const findAndUpdate = (personName, done) => {
   const ageToSet = 20;
-
-  done(null /*, data*/);
+  Person.findOneAndUpdate({name: personName}, { age: ageToSet }, { new: true }, function(err, person){
+    if(err) return console.log(err);
+    done(null, person);
+  })
 };
 
 const removeById = (personId, done) => {
-  done(null /*, data*/);
+  Person.findByIdAndRemove({_id: personId}, function(err, person){
+    if(err) return console.log(err);
+    done(null, person);
+  })
 };
 
 const removeManyPeople = (done) => {
   const nameToRemove = "Mary";
-
-  done(null /*, data*/);
+  Person.remove({ name: nameToRemove }, function(err, person){
+    if(err) return console.log(err);
+    done(null, person);
+  })
 };
 
 const queryChain = (done) => {
   const foodToSearch = "burrito";
 
-  done(null /*, data*/);
+  Person.find({favoriteFoods: foodToSearch})
+        .sort({name: "asc"})
+        .limit(2)
+        .select({age: 0})
+        .exec((err, data) => err ? done(err) : done(null, data));
 };
-
 /** **Well Done !!**
 /* You completed these challenges, let's go celebrate !
  */
